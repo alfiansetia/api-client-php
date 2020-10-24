@@ -16,7 +16,7 @@
 if(isset($_POST['aksi'])){
 	$aksi = $_POST['aksi'];
 	if($aksi == 'tambah'){
-		$url = 'http://127.0.0.1/project1/tes.php';
+		$url = 'https://35.185.191.122/api-server.php';
 		$data= [
 			'aksi' => $aksi,
 			'name' => $_POST['name'],
@@ -29,14 +29,19 @@ if(isset($_POST['aksi'])){
 		                "method"=>"POST",
 		                "header"=>"Content-Type: application/x-www-form-urlencoded",
 		                "content"=>http_build_query($data)
-		            )
+		            ),
+		            "ssl" => array(
+				        'verify_peer' => false,
+				        'verify_peer_name' => false,
+				        'allow_self_signed' => true
+				    )
 		);
 		$str = file_get_contents($url, false,stream_context_create($options));
 		$json = json_decode($str, true);
 		// echo $url;
 		// var_dump($_POST);
 	}elseif($aksi == 'edit'){
-		$url = 'http://127.0.0.1/project1/tes.php';
+		$url = 'https://35.185.191.122/api-server.php';
 		$data= [
 			'aksi' => $aksi,
 			'id' => $_POST['id'],
@@ -50,14 +55,19 @@ if(isset($_POST['aksi'])){
 		                "method"=>"PUT",
 		                "header"=>"Content-Type: application/x-www-form-urlencoded",
 		                "content"=>http_build_query($data)
-		            )
+		            ),
+		            "ssl" => array(
+				        'verify_peer' => false,
+				        'verify_peer_name' => false,
+				        'allow_self_signed' => true
+				    )
 		);
 		$str = file_get_contents($url, false,stream_context_create($options));
 		$json = json_decode($str, true);
 		// echo $url;
 		// var_dump($str);
 	}elseif($aksi == 'hapus'){
-		$url = 'http://127.0.0.1/project1/tes.php';
+		$url = 'https://35.185.191.122/api-server.php';
 		$data= [
 			'aksi' => $aksi,
 			'id' => $_POST['id'],
@@ -67,19 +77,60 @@ if(isset($_POST['aksi'])){
 		                "method"=>"DELETE",
 		                "header"=>"Content-Type: application/x-www-form-urlencoded",
 		                "content"=>http_build_query($data)
-		            )
+		            ),
+		            "ssl" => array(
+				        'verify_peer' => false,
+				        'verify_peer_name' => false,
+				        'allow_self_signed' => true
+				    )
 		);
 		$str = file_get_contents($url, false,stream_context_create($options));
 		$json = json_decode($str, true);
-		echo $url;
+		// echo $url;
 	}else{
-		$str = file_get_contents('http://127.0.0.1/project1/tes.php?load=all');
+		$url = 'https://35.185.191.122/api-server.php';
+		$data= [
+			'load' => 'all'
+		];
+		$options = array(
+		            "http"=> array(
+		                "method"=>"GET",
+		                "header"=>"Content-Type: application/x-www-form-urlencoded",
+		                "content"=>http_build_query($data)
+		            ),
+		            "ssl" => array(
+				        'verify_peer' => false,
+				        'verify_peer_name' => false,
+				        'allow_self_signed' => true
+				    )
+		);
+		$str = file_get_contents($url, false,stream_context_create($options));
 		$json = json_decode($str, true);
-		echo $aksi;
+		// $str = file_get_contents('https://35.185.191.122/api-server.php?load=all');
+		// $json = json_decode($str, true);
+		// echo $aksi;
 	}
 }else{
-	$str = file_get_contents('http://127.0.0.1/project1/tes.php?load=all');
+	$url = 'https://35.185.191.122/api-server.php?load=all';
+	$data= [
+		'load' => 'all'
+	];
+	$options = array(
+	            "http"=> array(
+	                "method"=>"GET",
+	                "header"=>"Content-Type: application/x-www-form-urlencoded",
+	                "content"=>http_build_query($data)
+	            ),
+	            "ssl" => array(
+			        'verify_peer' => false,
+			        'verify_peer_name' => false,
+			        'allow_self_signed' => true
+			    )
+	);
+	$str = file_get_contents($url, false,stream_context_create($options));
 	$json = json_decode($str, true);
+	// $str = file_get_contents('https://35.185.191.122/api-server.php?load=all');
+	// $json = json_decode($str, true);
 	// echo '<pre>' . print_r($json['status'], true) . '</pre>';
 
 } ?>
