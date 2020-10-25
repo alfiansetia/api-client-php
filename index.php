@@ -12,7 +12,8 @@
   </head>
   <body>
 
-<?php 
+
+ <?php
 if(isset($_POST['aksi'])){
 	$aksi = $_POST['aksi'];
 	if($aksi == 'tambah'){
@@ -87,29 +88,8 @@ if(isset($_POST['aksi'])){
 		$str = file_get_contents($url, false,stream_context_create($options));
 		$json = json_decode($str, true);
 		// echo $url;
-	}else{
-		$url = 'https://35.185.191.122/api-server.php';
-		$data= [
-			'load' => 'all'
-		];
-		$options = array(
-		            "http"=> array(
-		                "method"=>"GET",
-		                "header"=>"Content-Type: application/x-www-form-urlencoded",
-		                "content"=>http_build_query($data)
-		            ),
-		            "ssl" => array(
-				        'verify_peer' => false,
-				        'verify_peer_name' => false,
-				        'allow_self_signed' => true
-				    )
-		);
-		$str = file_get_contents($url, false,stream_context_create($options));
-		$json = json_decode($str, true);
-		// $str = file_get_contents('https://35.185.191.122/api-server.php?load=all');
-		// $json = json_decode($str, true);
-		// echo $aksi;
 	}
+	
 }else{
 	$url = 'https://35.185.191.122/api-server.php?load=all';
 	$data= [
@@ -129,14 +109,74 @@ if(isset($_POST['aksi'])){
 	);
 	$str = file_get_contents($url, false,stream_context_create($options));
 	$json = json_decode($str, true);
-	// $str = file_get_contents('https://35.185.191.122/api-server.php?load=all');
-	// $json = json_decode($str, true);
 	// echo '<pre>' . print_r($json['status'], true) . '</pre>';
 
-} ?>
+}
 
-  	<div class="container mt-3">
-	    
+if(isset($_GET['query'])){
+	$url = 'https://35.185.191.122/api-server.php?query='.$_GET['query'];
+	$data= [
+		'query' => $_GET['query']
+	];
+	$options = array(
+	            "http"=> array(
+	                "method"=>"GET",
+	                "header"=>"Content-Type: application/x-www-form-urlencoded",
+	                "content"=>http_build_query($data)
+	            ),
+	            "ssl" => array(
+			        'verify_peer' => false,
+			        'verify_peer_name' => false,
+			        'allow_self_signed' => true
+			    )
+	);
+	$str = file_get_contents($url, false,stream_context_create($options));
+	$json = json_decode($str, true);
+}
+
+ ?>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+		<div class="container">
+		  <a class="navbar-brand" href="index.php">
+		  	<img src="https://akupintar.id/documents/20143/0/stt-dutabangsa-bekasi.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+		  	Bootstrap
+		  </a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item active">
+		        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link" href="#">Link</a>
+		      </li>
+		      <li class="nav-item dropdown">
+		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		          Dropdown
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		          <a class="dropdown-item" href="#">Action</a>
+		          <a class="dropdown-item" href="#">Another action</a>
+		          <div class="dropdown-divider"></div>
+		          <a class="dropdown-item" href="#">Something else here</a>
+		        </div>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+		      </li>
+		    </ul>
+		    <form class="form-inline my-2 my-lg-0">
+		      <input name="query" class="form-control mr-sm-2" type="search" placeholder="Cari" aria-label="Search">
+		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cari</button>
+		    </form>
+		  </div>
+		</div>
+	</nav>
+  	<div class="container">
 	    <div class="card border-primary mb-2">
 	    	<div class="card-header">
 	    		<h3>Data, Kelompok!</h3>
@@ -148,7 +188,7 @@ if(isset($_POST['aksi'])){
 	    				<thead class="thead-dark">
 	    					<tr>
 	    						<th style="text-align: center;">No</th>
-	    						<th>Name</th>
+	    						<th>Nama</th>
 	    						<th>Email</th>
 	    						<th>Gender</th>
 	    						<th>No Telp</th>
@@ -156,9 +196,10 @@ if(isset($_POST['aksi'])){
 	    					</tr>
 	    				</thead>
 	    				<tbody>
-	    					
+
 
 								 <?php 
+								 //Pengulangan untuk mengambil data Json
 								 $no = 1; 
 								 foreach ($json['data'] as $key => $data) {
 								 	 // var_dump($data); ?>
@@ -194,7 +235,7 @@ if(isset($_POST['aksi'])){
 
 
 <?php 
-
+//Fungsi untuk menampilkan alert by sweet alert
 function alert($message, $icon){
 	echo "<script>
     	Swal.fire({
